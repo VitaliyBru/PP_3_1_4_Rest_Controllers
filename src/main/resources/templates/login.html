@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <title>Login page</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-3 mx-auto py-5">
+            <h3>Please sign in</h3>
+            <form method="POST"  th:action="@{/login}" name="f">
+                <div class="form-group">
+                    <input class="form-control" name="username" placeholder="Email address" type="text">
+                    <input class="form-control" name="password" placeholder="Password" type="password">
+                </div>
+                <button class="btn w-100 btn-primary" type="submit">Sign in</button>
+            </form>
+            <div th:if="${param.error}" class="text-danger">
+                Не верный email или пароль
+            </div>
+        </div>
+        <form>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

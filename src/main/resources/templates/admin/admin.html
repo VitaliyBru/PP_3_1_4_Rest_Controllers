@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css"/>
+    <title>React App</title>
+<body>
+<div id="root">
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+        <div class="heder row py-3 px-1 bg-dark">
+            <div class="header__user col-auto text-light">
+                <b th:text="${user.getEmail() + ' '}"></b><span>with roles: </span><span th:each="role : ${user.getRoles()}" th:text="${role.name().replaceAll('^ROLE_', '') + ' '}"></span></div>
+            <div class="col-auto ml-auto">
+                <form method="POST" action="/logout">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button class="btn btn-sm text-muted" type="submit">Log out</button>
+                </form>
+            </div>
+        </div>
+        <div class="row flex-fill align-items-stretch">
+            <div class="col-2 py-3 px-0">
+                <a th:if="${user.getRoles().contains(ADMIN)}" class="btn btn-sm px-4 py-2 text-left w-100 btn-primary">Admin</a>
+                <a class="btn btn-sm px-4 py-2 text-left w-100 btn-link" href="/user">User</a>
+            </div>
+            <div class="col-10 px-4 py-3 bg-light"><h2>Admin panel</h2>
+                <div class="py-2">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active">Users table</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/addNewUser">New user</a></li>
+                    </ul>
+                    <div class="border rounded-sm bg-white">
+                        <div class="p-3 border-bottom h5 bg-light">All users</div>
+                        <div class="p-3">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First name</th>
+                                    <th scope="col">Last name</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="person : ${users}">
+                                    <td th:text="${person.getId()}"></td>
+                                    <td th:text="${person.getFirstName()}"></td>
+                                    <td th:text="${person.getLastName()}"></td>
+                                    <td th:text="${person.getAge()}"></td>
+                                    <td th:text="${person.getEmail()}"></td>
+                                    <td>
+                                        <span th:each="role : ${person.getRoles()}" th:text="${role.name().replaceAll('^ROLE_', '') + '  '}"></span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/admin/edit(user_id=${person.getId()})}" class="btn btn-sm btn-info">Edit</a>
+                                    </td>
+                                    <td>
+                                        <form method="POST" th:action="@{/admin/delete(user_id=${person.getId()})}">
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

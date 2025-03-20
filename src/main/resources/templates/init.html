@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<h2 th:if="${user != null}">Создан пользователь. Имя для входа: admin@admin пароль: admin</h2>
+<p><a href="/user">Перейти на страницу пользователя. </a> </p>
+<p><a href="/admin">Перейти на страницу админестратора. </a> </p>
+</body>
+</html>
