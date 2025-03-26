@@ -7,7 +7,6 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,29 +23,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    public Optional<User> getUserById(int id) {
-        return userRepository.findById(id);
-    }
-
     @Transactional
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updateUser(User updatedUser) {
-        if (updatedUser.getPassword().isEmpty()) {
-            Optional<User> savedUser = userRepository.findById(updatedUser.getId());
-            savedUser.ifPresent(u -> updatedUser.setPassword(u.getPassword()));
+        if (user.getId() == 0 || !user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {
-            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            userRepository.findById(user.getId()).ifPresent(u -> user.setPassword(u.getPassword()));
         }
-        userRepository.save(updatedUser);
+        userRepository.save(user);
     }
 
     @Transactional
