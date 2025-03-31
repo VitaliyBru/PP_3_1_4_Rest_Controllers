@@ -17,12 +17,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-public class adminRestController {
+public class AdminRestController {
 
     private final UserService userService;
     private final UserValidator userValidator;
 
-    public adminRestController(UserService userService, UserValidator userValidator) {
+    public AdminRestController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
         this.userValidator = userValidator;
     }
